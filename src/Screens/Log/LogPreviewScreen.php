@@ -55,7 +55,7 @@ class LogPreviewScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::view('components.log_item')
+            Layout::view('orchid_addon::log_item')
         ];
     }
 }
