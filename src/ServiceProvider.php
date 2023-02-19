@@ -2,6 +2,10 @@
 
 namespace OrchidAddon;
 
+use Illuminate\Contracts\Foundation\CachesRoutes;
+use Illuminate\Support\Facades\Route;
+use Orchid\Platform\Dashboard;
+
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
@@ -12,6 +16,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/../views', 'orchid_addon');
-        $this->loadRoutesFrom(__DIR__.'/../routes/phpinfo.php');
+        if (! ($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
+            Route::domain((string) config('platform.domain'))
+                ->prefix(Dashboard::prefix('/'))
+                ->middleware(config('platform.middleware.private'))
+                ->group(__DIR__.'/../routes/phpinfo.php');
+        }
     }
 }
