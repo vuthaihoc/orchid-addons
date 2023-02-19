@@ -12,7 +12,8 @@
         }
     ],
     "require": {
-        "orchid/platform": "^13.10"
+        "orchid/platform": "^13.10",
+        "calebporzio/sushi": "^2.4"
     },
     "extra": {
         "laravel": {

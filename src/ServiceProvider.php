@@ -20,7 +20,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             Route::domain((string) config('platform.domain'))
                 ->prefix(Dashboard::prefix('/'))
                 ->middleware(config('platform.middleware.private'))
-                ->group(__DIR__.'/../routes/phpinfo.php');
+                ->group(__DIR__.'/../routes/orchid_addon.php');
         }
     }
 }
