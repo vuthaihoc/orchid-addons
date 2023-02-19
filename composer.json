@@ -1,0 +1,24 @@
+{
+    "name": "hocvt/orchid-addons",
+    "autoload": {
+        "psr-4": {
+            "OrchidAddon\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "vuthaihoc",
+            "email": "vuthaihoc.ttud@gmail.com"
+        }
+    ],
+    "require": {
+        "orchid/platform": "^13.10"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OrchidAddon\\ServiceProvider"
+            ]
+        }
+    }
+}
