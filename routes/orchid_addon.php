@@ -1,6 +1,9 @@
 <?php
 
-\Illuminate\Support\Facades\Route::screen('phpinfo', \OrchidAddon\Screens\PhpinfoScreen::class)
+Route::post('advanced-relation', [\OrchidAddon\Http\Controllers\AdvancedRelationController::class, 'view'])
+    ->name('platform.systems.advanced_relation');
+
+Route::screen('phpinfo', \OrchidAddon\Screens\PhpinfoScreen::class)
     ->name('platform.phpinfo')
     ->breadcrumbs(function (\Tabuna\Breadcrumbs\Trail $trail) {
         return $trail

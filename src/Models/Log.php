@@ -22,7 +22,7 @@ class Log extends Model
 
     public function getRows()
     {
-        return LogViewer::getFiles(true, true);
+        return LogViewer::getFiles(true);
     }
 
     protected function sushiShouldCache()
