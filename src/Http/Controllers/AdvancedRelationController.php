@@ -76,6 +76,7 @@ class AdvancedRelationController extends Controller
     )
     {
         if ($scope !== null) {
+            $scope['parameters'][] = $search;
             /** @var Collection|array $model */
             $model = $model->{$scope['name']}(...$scope['parameters']);
         }
@@ -88,14 +89,16 @@ class AdvancedRelationController extends Controller
             return $model->take($chunk)->pluck($append ?? $name, $key);
         }
 
-        $model = $model->where(function ($query) use ($name, $search, $searchColumns) {
-            $query->where($name, 'like', '%' . $search . '%');
-            if ($searchColumns !== null) {
-                foreach ($searchColumns as $column) {
-                    $query->orWhere($column, 'like', '%' . $search . '%');
+        if($scope == null){
+            $model = $model->where(function ($query) use ($name, $search, $searchColumns) {
+                $query->where($name, 'like', '%' . $search . '%');
+                if ($searchColumns !== null) {
+                    foreach ($searchColumns as $column) {
+                        $query->orWhere($column, 'like', '%' . $search . '%');
+                    }
                 }
-            }
-        });
+            });
+        }
 
         return $model
             ->limit($chunk)
