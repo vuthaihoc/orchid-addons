@@ -61,9 +61,9 @@ class LogListScreen extends Screen
                 TD::make('last_modified', 'Last Modified')
                     ->render(fn(Log $log) => \Carbon\Carbon::createFromTimeStamp($log->last_modified))
                     ->sort(),
-                TD::make('file_size', 'File Size')
-                    ->render(fn(Log $log) => round((int)$log->file_size/1048576, 2).' MB')
-                    ->sort(),
+//                TD::make('file_size', 'File Size')
+//                    ->render(fn(Log $log) => round((int)$log->file_size/1048576, 2).' MB')
+//                    ->sort(),
                 TD::make(__('Actions'))
                     ->align(TD::ALIGN_CENTER)
                     ->width('100px')

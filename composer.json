@@ -1,5 +1,5 @@
 {
-    "name": "hocvt/orchid-addons",
+    "name": "phhung1901/orchid-addons",
     "autoload": {
         "psr-4": {
             "OrchidAddon\\": "src/"
@@ -7,8 +7,8 @@
     },
     "authors": [
         {
-            "name": "vuthaihoc",
-            "email": "vuthaihoc.ttud@gmail.com"
+            "name": "phhung1901",
+            "email": "thung18081901@gmail.com"
         }
     ],
     "require": {
