@@ -61,15 +61,15 @@ class LogListScreen extends Screen
                 TD::make('last_modified', 'Last Modified')
                     ->render(fn(Log $log) => \Carbon\Carbon::createFromTimeStamp($log->last_modified))
                     ->sort(),
-//                TD::make('file_size', 'File Size')
-//                    ->render(fn(Log $log) => round((int)$log->file_size/1048576, 2).' MB')
-//                    ->sort(),
+                TD::make('file_size', 'File Size')
+                    ->render(fn(Log $log) => round((int)$log->file_size/1048576, 2).' MB')
+                    ->sort(),
                 TD::make(__('Actions'))
                     ->align(TD::ALIGN_CENTER)
                     ->width('100px')
                     ->render(function (Log $log) {
                         return DropDown::make()
-                            ->icon('options-vertical')
+                            ->icon('three-dots-vertical')
                             ->list([
                                 Link::make(__('Preview'))
                                     ->route('platform.logs.preview', encrypt($log->file_name))
