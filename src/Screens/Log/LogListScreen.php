@@ -69,7 +69,7 @@ class LogListScreen extends Screen
                     ->width('100px')
                     ->render(function (Log $log) {
                         return DropDown::make()
-                            ->icon('options-vertical')
+                            ->icon('three-dots-vertical')
                             ->list([
                                 Link::make(__('Preview'))
                                     ->route('platform.logs.preview', encrypt($log->file_name))
