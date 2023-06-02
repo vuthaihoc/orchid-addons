@@ -3,6 +3,9 @@
 namespace OrchidAddon\Screens\Log;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Orchid\Alert\Alert;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
@@ -72,19 +75,19 @@ class LogListScreen extends Screen
                             ->icon('three-dots-vertical')
                             ->list([
                                 Link::make(__('Preview'))
-                                    ->route('platform.logs.preview', encrypt($log->file_name))
+                                    ->route('platform.logs.preview', $log->file_name)
                                     ->icon('eye'),
 
                                 Button::make(__('Delete'))
                                     ->icon('trash')
                                     ->confirm("Do you want to delete ?")
                                     ->method('remove', [
-                                        'file_name' => encrypt($log->file_name),
+                                        'file_name' => $log->file_name,
                                     ]),
                                 Button::make(__('Download'))
                                     ->icon('cloud-download')
                                     ->method('download', [
-                                        'file_name' => encrypt($log->file_name),
+                                        'file_name' => $log->file_name,
                                     ]),
                             ]);
                     }),
@@ -100,7 +103,7 @@ class LogListScreen extends Screen
 
     public function remove(Request $request)
     {
-        $file_name = decrypt($request->get('file_name'));
+        $file_name = $request->get('file_name');
         File::delete(storage_path("logs/$file_name"));
         Toast::info(__('Log was removed'));
     }

@@ -15,7 +15,7 @@ class LogPreviewScreen extends Screen
      */
     public function query(string $file_name): iterable
     {
-        LogViewer::setFile(decrypt($file_name));
+        LogViewer::setFile($file_name);
         $logs = LogViewer::all();
 
         if (count($logs) <= 0) {

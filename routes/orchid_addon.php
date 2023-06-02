@@ -25,5 +25,5 @@ Route::screen('logs/{file_name}/preview', \OrchidAddon\Screens\Log\LogPreviewScr
     ->breadcrumbs(function (\Tabuna\Breadcrumbs\Trail $trail, $file_name) {
         return $trail
             ->parent('platform.logs')
-            ->push(decrypt($file_name));
+            ->push($file_name);
     });
