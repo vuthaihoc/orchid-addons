@@ -77,7 +77,7 @@ class LogListScreen extends Screen
 
                                 Button::make(__('Delete'))
                                     ->icon('trash')
-                                    ->confirm()
+                                    ->confirm("Do you want to delete ?")
                                     ->method('remove', [
                                         'file_name' => encrypt($log->file_name),
                                     ]),
@@ -101,8 +101,7 @@ class LogListScreen extends Screen
     public function remove(Request $request)
     {
         $file_name = decrypt($request->get('file_name'));
-        Log::where('file_name', $file_name)->delete();
+        File::delete(storage_path("logs/$file_name"));
         Toast::info(__('Log was removed'));
-
     }
 }
