@@ -4,6 +4,8 @@
 namespace OrchidAddon;
 
 
+use Illuminate\Support\Facades\File;
+
 class LogViewer
 {
     private static string $file;
@@ -203,5 +205,14 @@ class LogViewer
             }
         }
         return array_values($files);
+    }
+
+
+    /**
+     * @param string $file_name
+     */
+    public static function deleteFile($file_name){
+        $fileLogPath = self::pathToLogFile($file_name);
+        File::delete($fileLogPath);
     }
 }

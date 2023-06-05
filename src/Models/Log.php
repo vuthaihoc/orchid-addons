@@ -4,6 +4,7 @@
 namespace OrchidAddon\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Client\Request;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 use OrchidAddon\LogViewer;
@@ -30,4 +31,7 @@ class Log extends Model
         return false;
     }
 
+    public function deleteLogFile($file_name){
+        LogViewer::deleteFile($file_name);
+    }
 }

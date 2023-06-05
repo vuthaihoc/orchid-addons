@@ -93,7 +93,8 @@ class LogListScreen extends Screen
     public function remove(Request $request)
     {
         $file_name = $request->get('file_name');
-        File::delete(storage_path("logs/$file_name"));
+        $log = Log::where('file_name', $file_name)->first();
+        $log->deleteLogFile($file_name);
         Toast::info(__('Log was removed'));
     }
 }
