@@ -94,7 +94,9 @@ class LogListScreen extends Screen
     {
         $file_name = $request->get('file_name');
         $log = Log::where('file_name', $file_name)->first();
-        $log->deleteLogFile($file_name);
+        if (!empty($log)){
+            $log->deleteLogFile($file_name);
+        }
         Toast::info(__('Log was removed'));
     }
 }
