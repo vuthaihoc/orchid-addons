@@ -3,6 +3,7 @@
 namespace OrchidAddon\Screens\Log;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
@@ -10,7 +11,6 @@ use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
-use OrchidAddon\LogViewer;
 use OrchidAddon\Models\Log;
 
 class LogListScreen extends Screen
@@ -72,37 +72,31 @@ class LogListScreen extends Screen
                             ->icon('three-dots-vertical')
                             ->list([
                                 Link::make(__('Preview'))
-                                    ->route('platform.logs.preview', encrypt($log->file_name))
+                                    ->route('platform.logs.preview', $log->file_name)
                                     ->icon('eye'),
 
                                 Button::make(__('Delete'))
                                     ->icon('trash')
-                                    ->confirm()
+                                    ->confirm("Do you want to delete ?")
                                     ->method('remove', [
-                                        'file_name' => encrypt($log->file_name),
+                                        'file_name' => $log->file_name,
                                     ]),
-                                Button::make(__('Download'))
+                                Link::make(__('Download'))
                                     ->icon('cloud-download')
-                                    ->method('download', [
-                                        'file_name' => encrypt($log->file_name),
-                                    ]),
+                                    ->route('platform.logs.download', $log->file_name)
                             ]);
                     }),
             ])
         ];
     }
 
-    public function download(Request $request)
-    {
-        $file_name = decrypt($request->get('file_name'));
-        return response()->download(LogViewer::pathToLogFile($file_name));
-    }
-
     public function remove(Request $request)
     {
-        $file_name = decrypt($request->get('file_name'));
-        Log::where('file_name', $file_name)->delete();
+        $file_name = $request->get('file_name');
+        $log = Log::where('file_name', $file_name)->first();
+        if (!empty($log)){
+            $log->deleteLogFile($file_name);
+        }
         Toast::info(__('Log was removed'));
-
     }
 }
