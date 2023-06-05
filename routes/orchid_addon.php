@@ -1,5 +1,7 @@
 <?php
 
+use OrchidAddon\LogViewer;
+
 Route::post('advanced-relation', [\OrchidAddon\Http\Controllers\AdvancedRelationController::class, 'view'])
     ->name('platform.systems.advanced_relation');
 
@@ -27,3 +29,9 @@ Route::screen('logs/{file_name}/preview', \OrchidAddon\Screens\Log\LogPreviewScr
             ->parent('platform.logs')
             ->push($file_name);
     });
+
+Route::get('logs/{file_name}/download', function ($file_name){
+    return response()->download(LogViewer::pathToLogFile($file_name));
+})->name('platform.logs.download');
+
+
