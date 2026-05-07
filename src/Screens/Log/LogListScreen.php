@@ -69,20 +69,20 @@ class LogListScreen extends Screen
                     ->width('100px')
                     ->render(function (Log $log) {
                         return DropDown::make()
-                            ->icon('three-dots-vertical')
+                            ->icon('bs.three-dots-vertical')
                             ->list([
                                 Link::make(__('Preview'))
                                     ->route('platform.logs.preview', $log->file_name)
-                                    ->icon('eye'),
+                                    ->icon('bs.eye'),
 
                                 Button::make(__('Delete'))
-                                    ->icon('trash')
+                                    ->icon('bs.trash')
                                     ->confirm("Do you want to delete ?")
                                     ->method('remove', [
                                         'file_name' => $log->file_name,
                                     ]),
                                 Link::make(__('Download'))
-                                    ->icon('cloud-download')
+                                    ->icon('bs.cloud-download')
                                     ->route('platform.logs.download', $log->file_name)
                             ]);
                     }),
