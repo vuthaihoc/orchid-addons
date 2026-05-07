@@ -11,9 +11,7 @@
             <div id="collapse{{ $key }}" class="panel-collapse collapse p-3" role="tabpanel" aria-labelledby="heading{{ $key }}">
                 <div class="panel-body">
                     <p>{{$log['text']}}</p>
-                    <pre><code class="php">
-              {{ trim($log['stack']) }}
-            </code></pre>
+                    <pre><code id="code-{{ $key }}" class="language-plaintext">{{ trim($log['stack']) }}</code></pre>
                 </div>
             </div>
         </div>
@@ -22,8 +20,33 @@
     @endforelse
 </div>
 
-@section('scripts')
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-@endsection
+@push('scripts')
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script>
+        document.addEventListener('turbo:load', function () {
+            hljs.configure({
+                languages: ['plaintext']
+            });
+            document.querySelectorAll('.panel-collapse').forEach(collapse => {
+                collapse.addEventListener('shown.bs.collapse', function () {
+                    const code = collapse.querySelector('code');
+                    if (!code) {
+                        return;
+                    }
+
+                    // evitar rehacer highlight
+                    if (code.dataset.highlighted) {
+                        return;
+                    }
+
+                    hljs.highlightElement(code);
+                    code.dataset.highlighted = 'true';
+                });
+            });
+        });
+    </script>
+@endpush

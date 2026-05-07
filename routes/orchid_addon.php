@@ -23,15 +23,24 @@ Route::screen('logs', \OrchidAddon\Screens\Log\LogListScreen::class)
     });
 
 Route::screen('logs/{file_name}/preview', \OrchidAddon\Screens\Log\LogPreviewScreen::class)
+    ->where('file_name', '.*')
     ->name('platform.logs.preview')
     ->breadcrumbs(function (\Tabuna\Breadcrumbs\Trail $trail, $file_name) {
-        return $trail
-            ->parent('platform.logs')
-            ->push($file_name);
+
+        $trail = $trail->parent('platform.logs');
+        $parts = explode('/', $file_name);
+        $currentPath = '';
+    
+        foreach ($parts as $part) {
+            $currentPath .= ($currentPath ? '/' : '') . $part;
+            $trail->push($part);
+        }
+
+        return $trail;
     });
 
-Route::get('logs/{file_name}/download', function ($file_name){
+Route::get('logs/{file_name}/download', function ($file_name) {
     return response()->download(LogViewer::pathToLogFile($file_name));
-})->name('platform.logs.download');
-
-
+})
+    ->where('file_name', '.*')
+    ->name('platform.logs.download');
