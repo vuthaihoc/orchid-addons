@@ -1,8 +1,6 @@
 <?php
 
-
 namespace OrchidAddon;
-
 
 use Illuminate\Support\Facades\File;
 
@@ -91,14 +89,17 @@ class LogViewer
     {
         $logsPath = storage_path('logs');
 
-        if (app('files')->exists($file)) { // try the absolute path
+        if (app('files')->exists($file)) {
             return $file;
         }
-
-        $file = $logsPath.'/'.$file;
-
-        // check if requested file is really in the logs directory
-        if (dirname($file) !== $logsPath) {
+    
+        $file = $logsPath . '/' . $file;
+    
+        $realLogsPath = realpath($logsPath);
+        $realFilePath = realpath($file);
+    
+        // Ensure the requested file is inside the logs directory
+        if (!$realFilePath || !str_starts_with($realFilePath, $realLogsPath)) {
             throw new \Exception('No such log file');
         }
 
@@ -187,23 +188,41 @@ class LogViewer
     public static function getFiles(bool $basename = false, string $file_name = '')
     {
         $log_path = config('logging.viewer.path', storage_path('logs'));
-        $files = glob($log_path.'/*'.$file_name .'*.log');
-        $files = array_reverse($files);
-        $files = array_filter($files, 'is_file');
+        $files = [];
+        $rii = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($log_path)
+        );
 
-        if ($basename && is_array($files)) {
+        foreach ($rii as $file) {
+    
+            if ($file->isDir()) {
+                continue;
+            }
+
+            if ($file->getExtension() !== 'log') {
+                continue;
+            }
+
+            if ($file_name && !str_contains($file->getFilename(), $file_name)) {
+                continue;
+            }
+
+            $files[] = $file->getPathname();
+        }
+
+        rsort($files);
+
+        if ($basename) {
             foreach ($files as $k => $file) {
-                $file_name = basename($file);
-                if (file_exists($log_path . "/" . $file_name)) {
-                    $files[$k] = [
-                        'id'            => $k,
-                        'file_name'     => $file_name,
-                        'file_size'     => filesize($log_path . "/" . $file_name),
-                        'last_modified' => filemtime($log_path . "/" . $file_name),
-                    ];
-                }
+                $files[$k] = [
+                    'id'            => $k,
+                    'file_name'     => str_replace($log_path . '/', '', $file),
+                    'file_size'     => filesize($file),
+                    'last_modified' => filemtime($file),
+                ];
             }
         }
+    
         return array_values($files);
     }
 
