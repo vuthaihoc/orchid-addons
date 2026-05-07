@@ -10,7 +10,34 @@
             </div>
             <div id="collapse{{ $key }}" class="panel-collapse collapse p-3" role="tabpanel" aria-labelledby="heading{{ $key }}">
                 <div class="panel-body">
-                    <p>{{$log['text']}}</p>
+                    @php
+    $text = $log['text'];
+
+    preg_match('/(\{.*\}|\[.*\])$/s', $text, $matches);
+
+    $prettyJson = null;
+
+    if (!empty($matches[0])) {
+
+        $decoded = json_decode($matches[0], true);
+
+        if (json_last_error() === JSON_ERROR_NONE) {
+
+            $prettyJson = json_encode(
+                $decoded,
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+            );
+
+            $text = str_replace($matches[0], '', $text);
+        }
+    }
+@endphp
+
+<p>{{ trim($text) }}</p>
+
+@if($prettyJson)
+    <pre><code class="json">{{ $prettyJson }}</code></pre>
+@endif
                     <pre><code class="php">
               {{ trim($log['stack']) }}
             </code></pre>
@@ -23,7 +50,8 @@
 </div>
 
 @section('scripts')
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 @endsection
