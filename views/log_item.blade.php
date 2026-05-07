@@ -11,9 +11,7 @@
             <div id="collapse{{ $key }}" class="panel-collapse collapse p-3" role="tabpanel" aria-labelledby="heading{{ $key }}">
                 <div class="panel-body">
                     <p>{{$log['text']}}</p>
-                    <pre>
-                        <code id="code-{{ $key }}" class="language-plaintext">{{ trim($log['stack']) }}</code>
-                    </pre>
+                    <pre><code id="code-{{ $key }}" class="language-plaintext">{{ trim($log['stack']) }}</code></pre>
                 </div>
             </div>
         </div>
