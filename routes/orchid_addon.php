@@ -17,9 +17,10 @@ Route::screen('phpinfo', \OrchidAddon\Screens\PhpinfoScreen::class)
 Route::screen('logs', \OrchidAddon\Screens\Log\LogListScreen::class)
     ->name('platform.logs')
     ->breadcrumbs(function (\Tabuna\Breadcrumbs\Trail $trail) {
-            return $trail
-                ->parent('platform.index')
-                ->push(__('Logs'), route('platform.logs'));
+        return $trail
+            ->parent('platform.index')
+            ->push(__('Logs'), route('platform.logs'));
+    });
 
 Route::screen('logs/{file_name}/preview', \OrchidAddon\Screens\Log\LogPreviewScreen::class)
     ->where('file_name', '.*')
