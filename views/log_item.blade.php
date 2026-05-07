@@ -11,7 +11,9 @@
             <div id="collapse{{ $key }}" class="panel-collapse collapse p-3" role="tabpanel" aria-labelledby="heading{{ $key }}">
                 <div class="panel-body">
                     <p>{{$log['text']}}</p>
-                    <pre><code class="php">{{ trim($log['stack']) }}</code></pre>
+                    <pre>
+                        <code id="code-{{ $key }}" class="language-plaintext">{{ trim($log['stack']) }}</code>
+                    </pre>
                 </div>
             </div>
         </div>
@@ -27,8 +29,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            hljs.highlightAll();
+        document.addEventListener('turbo:load', function () {
+            hljs.configure({
+                languages: ['plaintext']
+            });
+            document.querySelectorAll('.panel-collapse').forEach(collapse => {
+                collapse.addEventListener('shown.bs.collapse', function () {
+                    const code = collapse.querySelector('code');
+                    if (!code) {
+                        return;
+                    }
+
+                    // evitar rehacer highlight
+                    if (code.dataset.highlighted) {
+                        return;
+                    }
+
+                    // forzar parser php
+                    code.textContent = "<?php\n" + code.textContent;
+                    hljs.highlightElement(code);
+                    code.dataset.highlighted = 'true';
+                });
+            });
         });
     </script>
 @endpush
