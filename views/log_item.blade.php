@@ -11,9 +11,7 @@
             <div id="collapse{{ $key }}" class="panel-collapse collapse p-3" role="tabpanel" aria-labelledby="heading{{ $key }}">
                 <div class="panel-body">
                     <p>{{$log['text']}}</p>
-                    <pre><code class="php">
-              {{ trim($log['stack']) }}
-            </code></pre>
+                    <pre><code class="php">{{ trim($log['stack']) }}</code></pre>
                 </div>
             </div>
         </div>
@@ -30,7 +28,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            alert('funciona?');
             hljs.highlightAll();
         });
     </script>
