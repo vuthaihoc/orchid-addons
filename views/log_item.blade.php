@@ -10,34 +10,7 @@
             </div>
             <div id="collapse{{ $key }}" class="panel-collapse collapse p-3" role="tabpanel" aria-labelledby="heading{{ $key }}">
                 <div class="panel-body">
-                    @php
-    $text = $log['text'];
-
-    preg_match('/(\{.*\}|\[.*\])$/s', $text, $matches);
-
-    $prettyJson = null;
-
-    if (!empty($matches[0])) {
-
-        $decoded = json_decode($matches[0], true);
-
-        if (json_last_error() === JSON_ERROR_NONE) {
-
-            $prettyJson = json_encode(
-                $decoded,
-                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
-            );
-
-            $text = str_replace($matches[0], '', $text);
-        }
-    }
-@endphp
-
-<p>{{ trim($text) }}</p>
-
-@if($prettyJson)
-    <pre><code class="json">{{ $prettyJson }}</code></pre>
-@endif
+                    <p>{{$log['text']}}</p>
                     <pre><code class="php">
               {{ trim($log['stack']) }}
             </code></pre>
