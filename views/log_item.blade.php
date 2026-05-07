@@ -43,8 +43,6 @@
                         return;
                     }
 
-                    // forzar parser php
-                    code.textContent = "<?php\n" + code.textContent;
                     hljs.highlightElement(code);
                     code.dataset.highlighted = 'true';
                 });
