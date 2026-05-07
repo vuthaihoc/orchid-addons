@@ -28,7 +28,7 @@ Route::screen('logs/{file_name}/preview', \OrchidAddon\Screens\Log\LogPreviewScr
     ->breadcrumbs(function (\Tabuna\Breadcrumbs\Trail $trail, $file_name) {
         return $trail
             ->parent('platform.logs')
-            ->push($file_name);
+            ->push(basename($file_name));
     });
 
 Route::get('logs/{file_name}/download', function ($file_name) {
