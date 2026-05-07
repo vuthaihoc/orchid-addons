@@ -23,6 +23,7 @@ Route::screen('logs', \OrchidAddon\Screens\Log\LogListScreen::class)
     });
 
 Route::screen('logs/{file_name}/preview', \OrchidAddon\Screens\Log\LogPreviewScreen::class)
+    ->where('file_name', '.*')
     ->name('platform.logs.preview')
     ->breadcrumbs(function (\Tabuna\Breadcrumbs\Trail $trail, $file_name) {
         return $trail
@@ -30,8 +31,8 @@ Route::screen('logs/{file_name}/preview', \OrchidAddon\Screens\Log\LogPreviewScr
             ->push($file_name);
     });
 
-Route::get('logs/{file_name}/download', function ($file_name){
+Route::get('logs/{file_name}/download', function ($file_name) {
     return response()->download(LogViewer::pathToLogFile($file_name));
-})->name('platform.logs.download');
-
-
+})
+    ->where('file_name', '.*')
+    ->name('platform.logs.download');
