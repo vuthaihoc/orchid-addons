@@ -16,6 +16,14 @@ Route::screen('phpinfo', \OrchidAddon\Screens\PhpinfoScreen::class)
 // Platform > Logs
 Route::screen('logs', \OrchidAddon\Screens\Log\LogListScreen::class)
     ->name('platform.logs')
+    ->breadcrumbs(function (\Tabuna\Breadcrumbs\Trail $trail) {
+            return $trail
+                ->parent('platform.index')
+                ->push(__('Logs'), route('platform.logs'));
+
+Route::screen('logs/{file_name}/preview', \OrchidAddon\Screens\Log\LogPreviewScreen::class)
+    ->where('file_name', '.*')
+    ->name('platform.logs.preview')
     ->breadcrumbs(function (\Tabuna\Breadcrumbs\Trail $trail, $file_name) {
 
         $trail = $trail->parent('platform.logs');
@@ -28,15 +36,6 @@ Route::screen('logs', \OrchidAddon\Screens\Log\LogListScreen::class)
         }
 
         return $trail;
-    });
-
-Route::screen('logs/{file_name}/preview', \OrchidAddon\Screens\Log\LogPreviewScreen::class)
-    ->where('file_name', '.*')
-    ->name('platform.logs.preview')
-    ->breadcrumbs(function (\Tabuna\Breadcrumbs\Trail $trail, $file_name) {
-        return $trail
-            ->parent('platform.logs')
-            ->push(basename($file_name));
     });
 
 Route::get('logs/{file_name}/download', function ($file_name) {
